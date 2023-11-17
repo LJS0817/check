@@ -48,26 +48,70 @@ class GroupContainer extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Transform.translate(
-            offset: const Offset(0, 3),
-            child: Container(
-              height: 40,
-              width: width,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-                border: Border.all(width: 3, color: backgroundColor2),
-              ),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  color: themeColor,
-                  fontSize: TITLE_FONT_SIZE,
-                  fontWeight: FontWeight.bold
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Transform.translate(
+                offset: const Offset(0, 3),
+                child: Container(
+                  height: 40,
+                  width: width,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                    border: Border.all(width: 3, color: backgroundColor2),
+                  ),
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                        color: themeColor,
+                        fontSize: TITLE_FONT_SIZE,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
                 ),
               ),
-            ),
+              Transform.translate(
+                offset: const Offset(-15, 3),
+                child:Container(
+                    height: 40,
+                    width: 60,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                      border: Border.all(width: 3, color: backgroundColor2),
+                      color: themeColor.withOpacity(0.9)
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                      child: InkWell(
+                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                        splashColor: themeColor.withOpacity(0.3),
+                        highlightColor: themeColor.withOpacity(0.3),
+                        onTap: () {
+                          log("ASDASD");
+                        },
+                        child: Container(
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            "삭제",
+                            style: TextStyle(
+                                color: backgroundColor,
+                                fontSize: TITLE_FONT_SIZE - 2,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        )
+                      ),
+                    )
+                ),
+              ),
+            ],
           ),
+
           Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

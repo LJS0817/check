@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DataProvider with ChangeNotifier {
   ///```
@@ -14,28 +14,57 @@ class DataProvider with ChangeNotifier {
   ///1 ~ length
   ///String value
   Map<String, List<String>> todo = {
-    "" : [ "0쇼케이스 불끄기", "0자동문 잠그기", "0카트 다 안에 넣기", "0컴퓨터 전원 끄기", "0컴퓨터 멀티탭 끄기", "0계산대 멀티탭 끄기", "0콘센트 뽑기", "0페기 냉장고에 넣기", "0냉장고 불 끄기 ", "0냉동고 불 끄기", "0화장실 불 끄기", "0문 잠그기", "0문 방범 확인하기", "0위에 문 방범 확인하기", ],
-    "te123 st 123" : [ "0askdasj", "0askdasj" ],
+
   };
 
   TimeOfDay resetTime = const TimeOfDay(hour: 0, minute: 0);
 
-  void setTime(TimeOfDay t) {
+  DataProvider() {
+    init();
+  }
+
+  void init() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    Set<String> keys = prefs.getKeys();
+    for (int i = 0; i < keys.length; i++) {
+      log(keys.elementAt(i));
+      if (keys.elementAt(i) == "time") {
+        resetTime = TimeOfDay(
+            hour: int.parse(prefs.getString("time")!.split(':')[0]),
+            minute: int.parse(prefs.getString("time")!.split(':')[1]));
+      } else {
+        log(prefs.getStringList(keys.elementAt(i)).toString());
+        todo[keys.elementAt(i)] = prefs.getStringList(keys.elementAt(i))!;
+      }
+    }
+  }
+
+  void setTime(TimeOfDay t) async {
     resetTime = t;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('time', "${resetTime.hour}:${resetTime.minute}");
+    // SharedPreferences
     notifyListeners();
   }
 
-  void setData(String key, List<String> value) {
+  void setData(String key, List<String> value) async {
     todo[key] = value;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(key, value);
     notifyListeners();
   }
 
-  void setDataWithString(String key, int index, String value) {
+  void setDataWithString(String key, int index, String value) async {
+    if(todo[key] == null) {
+      todo[key] = [];
+    }
     if(index >= todo[key]!.length) {
       todo[key]!.add(value);
     } else {
       todo[key]![index] = value;
     }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(key, todo[key]!);
     notifyListeners();
   }
 }

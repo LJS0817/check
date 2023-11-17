@@ -6,6 +6,7 @@ import 'package:checking/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+const String DEFAULT_TITLE = "Untitle";
 
 class TitleWidget extends StatelessWidget {
   const TitleWidget({super.key});
@@ -125,6 +126,9 @@ class TitleWidget extends StatelessWidget {
                 highlightColor: themeColor.withOpacity(0.3),
                 onTap: () {
                   data.setDataWithString("", data.todo[""]!.length, "0");
+                },
+                onLongPress: () {
+                  data.setDataWithString(data.todo[DEFAULT_TITLE] != null ? "$DEFAULT_TITLE ${data.todo.keys.toString().split(DEFAULT_TITLE).length}" : DEFAULT_TITLE, data.todo[DEFAULT_TITLE] == null ? 0 : data.todo[DEFAULT_TITLE]!.length, "0");
                 },
                 child: const SizedBox(
                   width: 53,
